@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.picodiploma.loginwithanimation.data.ResultState
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityStoryBinding
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
+import com.dicoding.picodiploma.loginwithanimation.view.addstory.AddStoryActivity
 import com.dicoding.picodiploma.loginwithanimation.view.welcome.WelcomeActivity
 import kotlinx.coroutines.launch
 
@@ -44,6 +45,15 @@ class StoryActivity : AppCompatActivity() {
                 setupAction()
             }
         }
+
+        binding.FABAddStory.setOnClickListener{
+            startActivity(Intent(this@StoryActivity, AddStoryActivity::class.java))
+        }
+
+        binding.FABLogout.setOnClickListener{
+            viewModel.logout()
+        }
+
         setupView()
         setupAction()
     }
