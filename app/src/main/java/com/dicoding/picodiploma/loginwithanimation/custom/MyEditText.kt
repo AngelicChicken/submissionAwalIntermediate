@@ -19,6 +19,8 @@ class MyEditText @JvmOverloads constructor(
     private var clearButtonImage: Drawable
 
     init {
+        inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD
+
         clearButtonImage = ContextCompat.getDrawable(context, R.drawable.baseline_close_24) as Drawable
         setOnTouchListener(this)
 

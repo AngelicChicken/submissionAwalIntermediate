@@ -34,7 +34,7 @@ import retrofit2.HttpException
 
 class AddStoryActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
-        MainViewModelFactory.getInstance(this)
+        ViewModelFactory.getAuthInstance(this)
     }
     private lateinit var binding: ActivityAddStoryBinding
 

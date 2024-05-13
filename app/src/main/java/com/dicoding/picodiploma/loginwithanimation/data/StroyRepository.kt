@@ -28,15 +28,9 @@ class StroyRepository private constructor(
     }
 
     companion object {
-        @Volatile
-        private var instance: StroyRepository? = null
-
         fun getInstance(
             apiService: ApiService,
             userPreference: UserPreference
-        ): StroyRepository =
-            instance ?: synchronized(this) {
-                instance ?: StroyRepository(apiService, userPreference)
-            }.also { instance = it }
+        ) = StroyRepository(apiService, userPreference)
     }
 }

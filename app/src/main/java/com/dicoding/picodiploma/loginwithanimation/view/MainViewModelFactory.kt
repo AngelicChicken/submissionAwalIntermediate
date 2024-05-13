@@ -22,15 +22,6 @@ class MainViewModelFactory(private val repository: StroyRepository) : ViewModelP
     }
 
     companion object {
-        @Volatile
-        private var INSTANCE: MainViewModelFactory? = null
-
-        @JvmStatic
-        fun getInstance(context: Context): MainViewModelFactory {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: MainViewModelFactory(Injection.provideStoryRepository(context))
-                    .also { INSTANCE = it }
-            }
-        }
+        fun getInstance(context: Context) = MainViewModelFactory(Injection.provideStoryRepository(context))
     }
 }
