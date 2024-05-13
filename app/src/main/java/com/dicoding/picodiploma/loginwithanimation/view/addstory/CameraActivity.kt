@@ -1,6 +1,9 @@
 package com.dicoding.picodiploma.loginwithanimation.view.addstory
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,6 +21,8 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.dicoding.picodiploma.loginwithanimation.R
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityCameraBinding
+import java.io.File
+import java.io.FileOutputStream
 
 class CameraActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCameraBinding
@@ -86,10 +91,8 @@ class CameraActivity : AppCompatActivity() {
             ContextCompat.getMainExecutor(this),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    val intent = Intent()
-                    intent.putExtra(EXTRA_CAMERAX_IMAGE, output.savedUri.toString())
-                    setResult(CAMERAX_RESULT, intent)
-                    finish()
+                    val uri = output.savedUri ?: Uri.fromFile(photoFile)
+                    resizeAndSaveImage(uri)
                 }
 
                 override fun onError(exc: ImageCaptureException) {
@@ -97,6 +100,41 @@ class CameraActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    private fun resizeAndSaveImage(uri: Uri) {
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeStream(contentResolver.openInputStream(uri), null, options)
+
+        val scaleFactor = calculateScaleFactor(options)
+        val originalBitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
+        val resizedBitmap = Bitmap.createScaledBitmap(originalBitmap, (originalBitmap.width * scaleFactor).toInt(), (originalBitmap.height * scaleFactor).toInt(), true)
+        val resizedFile = createCustomTempFile(application)
+        resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 90, FileOutputStream(resizedFile))
+        setResult(CAMERAX_RESULT, Intent().apply {
+            putExtra(EXTRA_CAMERAX_IMAGE, resizedFile.toURI().toString())
+        })
+        finish()
+    }
+
+
+    private fun calculateScaleFactor(options: BitmapFactory.Options): Float {
+        val targetSize = 1024 // Define your target size here
+        val maxDimension = options.outWidth.coerceAtLeast(options.outHeight)
+        return if (maxDimension > targetSize) {
+            targetSize.toFloat() / maxDimension.toFloat()
+        } else {
+            1.0f
+        }
+    }
+
+    private fun saveResizedImage(file: File, bitmap: Bitmap?) {
+        bitmap?.let {
+            FileOutputStream(file).use { outputStream ->
+                it.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
+            }
+        }
     }
 
     private fun hideSystemUI() {
