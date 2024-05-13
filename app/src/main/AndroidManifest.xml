@@ -27,12 +27,17 @@
         <activity
             android:name=".view.login.LoginActivity"
             android:exported="false" />
+        <activity android:name=".view.addstory.AddStoryActivity"
+            android:exported="false"/>
+        <activity android:name=".view.addstory.CameraActivity"
+            android:exported="false"/>
+        <activity android:name=".view.story.DetailStoryActivity"
+            android:exported="false"/>
         <activity
-            android:name=".view.main.MainActivity"
+            android:name=".view.story.StoryActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

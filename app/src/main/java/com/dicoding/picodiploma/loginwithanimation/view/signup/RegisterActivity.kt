@@ -30,7 +30,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var registerPassword: MyEditText
 
     private val viewModel by viewModels<ResgisterViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getAuthInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

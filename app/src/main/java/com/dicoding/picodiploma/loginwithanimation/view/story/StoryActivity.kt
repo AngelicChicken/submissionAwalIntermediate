@@ -23,7 +23,7 @@ class StoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoryBinding
 
     private val viewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getMainInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var loginPassword: MyEditText
 
     private val viewModel by viewModels<LoginViewModel> {
-        ViewModelFactory.getInstance(this)
+        ViewModelFactory.getAuthInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
                 if(response != null){
                     val name = response.loginResult?.name
                     val token = response.loginResult?.token
-                    viewModel.saveSession(UserModel(email, token!!))
+                    viewModel.saveSession(UserModel(email!!, token!!))
                     AlertDialog.Builder(this@LoginActivity).apply {
                         showLoading(false)
                         setTitle("Selamat")

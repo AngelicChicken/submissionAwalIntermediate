@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.dicoding.picodiploma.loginwithanimation.data.UserRepository
 import com.dicoding.picodiploma.loginwithanimation.di.Injection
 import com.dicoding.picodiploma.loginwithanimation.view.login.LoginViewModel
-import com.dicoding.picodiploma.loginwithanimation.view.main.MainViewModel
 import com.dicoding.picodiploma.loginwithanimation.view.signup.ResgisterViewModel
+import com.dicoding.picodiploma.loginwithanimation.view.story.MainViewModel
 
 class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
 
@@ -31,13 +31,19 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
         @Volatile
         private var INSTANCE: ViewModelFactory? = null
         @JvmStatic
-        fun getInstance(context: Context): ViewModelFactory {
-            if (INSTANCE == null) {
-                synchronized(ViewModelFactory::class.java) {
-                    INSTANCE = ViewModelFactory(Injection.provideRepository(context))
-                }
+        fun getAuthInstance(context: Context): ViewModelFactory {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: ViewModelFactory(Injection.provideRepository(context))
+                    .also { INSTANCE = it }
             }
-            return INSTANCE as ViewModelFactory
+        }
+
+        @JvmStatic
+        fun getMainInstance(context: Context) : ViewModelFactory {
+            return INSTANCE?: synchronized(this){
+                INSTANCE ?: ViewModelFactory(Injection.provideRepository(context))
+                    .also { INSTANCE = it }
+            }
         }
     }
 }
