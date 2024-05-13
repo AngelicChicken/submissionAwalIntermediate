@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.picodiploma.loginwithanimation.data.ResultState
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityStoryBinding
+import com.dicoding.picodiploma.loginwithanimation.view.MainViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.addstory.AddStoryActivity
 import com.dicoding.picodiploma.loginwithanimation.view.welcome.WelcomeActivity
@@ -24,7 +25,11 @@ class StoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoryBinding
 
     private val viewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getMainInstance(this)
+        ViewModelFactory.getAuthInstance(this)
+    }
+
+    private val storyViewModel by viewModels<StoryViewModel> {
+        MainViewModelFactory.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +77,7 @@ class StoryActivity : AppCompatActivity() {
 
     private fun setupAction(){
         lifecycleScope.launch {
-            viewModel.story().observe(this@StoryActivity) { story ->
+            storyViewModel.story().observe(this@StoryActivity) { story ->
                 when (story) {
                     is ResultState.Error -> {
                         binding.progressIndicator.visibility = View.INVISIBLE

@@ -5,20 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.picodiploma.loginwithanimation.data.UserRepository
 import com.dicoding.picodiploma.loginwithanimation.di.Injection
-import com.dicoding.picodiploma.loginwithanimation.view.login.LoginViewModel
-import com.dicoding.picodiploma.loginwithanimation.view.signup.ResgisterViewModel
 import com.dicoding.picodiploma.loginwithanimation.view.story.MainViewModel
 
-class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
+class MainViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
-            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
-                LoginViewModel(repository) as T
-            }
-            modelClass.isAssignableFrom(ResgisterViewModel::class.java) -> {
-                ResgisterViewModel(repository) as T
+            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
+                MainViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
@@ -26,11 +21,12 @@ class ViewModelFactory(private val repository: UserRepository) : ViewModelProvid
 
     companion object {
         @Volatile
-        private var INSTANCE: ViewModelFactory? = null
+        private var INSTANCE: MainViewModelFactory? = null
+
         @JvmStatic
-        fun getAuthInstance(context: Context): ViewModelFactory {
+        fun getInstance(context: Context): MainViewModelFactory {
             return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: ViewModelFactory(Injection.provideRepository(context))
+                INSTANCE ?: MainViewModelFactory(Injection.provideRepository(context))
                     .also { INSTANCE = it }
             }
         }

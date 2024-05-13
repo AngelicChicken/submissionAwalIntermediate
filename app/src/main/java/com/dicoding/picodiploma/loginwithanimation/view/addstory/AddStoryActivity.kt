@@ -21,6 +21,7 @@ import androidx.lifecycle.lifecycleScope
 import com.dicoding.picodiploma.loginwithanimation.R
 import com.dicoding.picodiploma.loginwithanimation.data.Api.ApiConfig
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityAddStoryBinding
+import com.dicoding.picodiploma.loginwithanimation.view.MainViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.addstory.CameraActivity.Companion.CAMERAX_RESULT
 import com.dicoding.picodiploma.loginwithanimation.view.story.MainViewModel
@@ -33,7 +34,7 @@ import retrofit2.HttpException
 
 class AddStoryActivity : AppCompatActivity() {
     private val viewModel by viewModels<MainViewModel> {
-        ViewModelFactory.getMainInstance(this)
+        MainViewModelFactory.getInstance(this)
     }
     private lateinit var binding: ActivityAddStoryBinding
 

@@ -25,19 +25,19 @@ class UserRepository private constructor(
         return apiService.login(email, password)
     }
 
-    fun getStory(): LiveData<ResultState<List<ListStoryItem>>> = liveData{
-        emit(ResultState.Loading)
-        try{
-            val response = apiService.getStories()
-            emit(ResultState.Success(response.listStory))
-        }catch (e: HttpException) {
-            val errorBody = e.response()?.errorBody()?.string()
-            val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
-            emit(ResultState.Error(errorResponse.message))
-        }catch (e: Exception){
-            emit(ResultState.Error(e.message ?: "Error"))
-        }
-    }
+//    fun getStory(): LiveData<ResultState<List<ListStoryItem>>> = liveData{
+//        emit(ResultState.Loading)
+//        try{
+//            val response = apiService.getStories()
+//            emit(ResultState.Success(response.listStory))
+//        }catch (e: HttpException) {
+//            val errorBody = e.response()?.errorBody()?.string()
+//            val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
+//            emit(ResultState.Error(errorResponse.message))
+//        }catch (e: Exception){
+//            emit(ResultState.Error(e.message ?: "Error"))
+//        }
+//    }
 
     suspend fun saveSession(user: UserModel) {
         userPreference.saveSession(user)

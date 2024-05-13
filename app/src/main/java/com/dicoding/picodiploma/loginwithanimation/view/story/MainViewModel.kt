@@ -21,6 +21,5 @@ class MainViewModel(private val repository: UserRepository) : ViewModel() {
             repository.logout()
         }
     }
-    fun story() = repository.getStory()
 }
 
