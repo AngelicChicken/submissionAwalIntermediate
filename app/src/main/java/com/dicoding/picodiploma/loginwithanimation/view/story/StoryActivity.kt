@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 class StoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStoryBinding
 
-    private val viewModel by viewModels<MainViewModel> {
+    private val mainViewModel by viewModels<MainViewModel> {
         ViewModelFactory.getAuthInstance(this)
     }
 
@@ -42,7 +42,7 @@ class StoryActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
 
-        viewModel.getSession().observe(this@StoryActivity) { user ->
+        mainViewModel.getSession().observe(this@StoryActivity) { user ->
             if (!user.isLogin) {
                 startActivity(Intent(this@StoryActivity, WelcomeActivity::class.java))
                 finish()
@@ -56,7 +56,7 @@ class StoryActivity : AppCompatActivity() {
         }
 
         binding.FABLogout.setOnClickListener{
-            viewModel.logout()
+            mainViewModel.logout()
         }
 
         setupView()
