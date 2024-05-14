@@ -15,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.picodiploma.loginwithanimation.data.ResultState
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityStoryBinding
-import com.dicoding.picodiploma.loginwithanimation.view.MainViewModelFactory
+import com.dicoding.picodiploma.loginwithanimation.view.StoryViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.addstory.AddStoryActivity
 import com.dicoding.picodiploma.loginwithanimation.view.welcome.WelcomeActivity
@@ -29,7 +29,7 @@ class StoryActivity : AppCompatActivity() {
     }
 
     private val storyViewModel by viewModels<StoryViewModel> {
-        MainViewModelFactory.getInstance(this)
+        StoryViewModelFactory.getInstance(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,9 +110,4 @@ class StoryActivity : AppCompatActivity() {
             else -> return super.onOptionsItemSelected(item)
         }
     }
-
-    private fun showLoading(isLoading: Boolean) {
-        binding.progressIndicator.visibility = if (isLoading) View.VISIBLE else View.GONE
-    }
-
 }

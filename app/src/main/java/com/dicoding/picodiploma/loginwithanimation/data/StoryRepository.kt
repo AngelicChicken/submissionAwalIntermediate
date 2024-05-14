@@ -2,14 +2,14 @@ package com.dicoding.picodiploma.loginwithanimation.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.dicoding.picodiploma.loginwithanimation.data.Api.ApiService
+import com.dicoding.picodiploma.loginwithanimation.data.api.ApiService
 import com.dicoding.picodiploma.loginwithanimation.data.api.response.ErrorResponse
 import com.dicoding.picodiploma.loginwithanimation.data.api.response.ListStoryItem
 import com.dicoding.picodiploma.loginwithanimation.data.pref.UserPreference
 import com.google.gson.Gson
 import retrofit2.HttpException
 
-class StroyRepository private constructor(
+class StoryRepository private constructor(
     private val apiService: ApiService,
     private val userPreference: UserPreference
 ) {
@@ -31,6 +31,6 @@ class StroyRepository private constructor(
         fun getInstance(
             apiService: ApiService,
             userPreference: UserPreference
-        ) = StroyRepository(apiService, userPreference)
+        ) = StoryRepository(apiService, userPreference)
     }
 }

@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.OrientationEventListener
@@ -13,13 +12,13 @@ import android.view.Surface
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
-import com.dicoding.picodiploma.loginwithanimation.R
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityCameraBinding
 import java.io.File
 import java.io.FileOutputStream
@@ -37,7 +36,7 @@ class CameraActivity : AppCompatActivity() {
 
         binding.switchCamera.setOnClickListener {
             cameraSelector =
-                if (cameraSelector.equals(CameraSelector.DEFAULT_BACK_CAMERA)) CameraSelector.DEFAULT_FRONT_CAMERA
+                if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
                 else CameraSelector.DEFAULT_BACK_CAMERA
 
             startCamera()
@@ -126,14 +125,6 @@ class CameraActivity : AppCompatActivity() {
             targetSize.toFloat() / maxDimension.toFloat()
         } else {
             1.0f
-        }
-    }
-
-    private fun saveResizedImage(file: File, bitmap: Bitmap?) {
-        bitmap?.let {
-            FileOutputStream(file).use { outputStream ->
-                it.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
-            }
         }
     }
 

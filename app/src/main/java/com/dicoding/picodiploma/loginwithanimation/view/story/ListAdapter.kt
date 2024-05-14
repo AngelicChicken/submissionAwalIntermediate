@@ -19,7 +19,6 @@ import com.dicoding.picodiploma.loginwithanimation.databinding.ListItemBinding
 
 
 class ListAdapter: ListAdapter<ListStoryItem, com.dicoding.picodiploma.loginwithanimation.view.story.ListAdapter.MyViewHolder>(DIFF_CALLBACK) {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
@@ -34,9 +33,9 @@ class ListAdapter: ListAdapter<ListStoryItem, com.dicoding.picodiploma.loginwith
 
 
     inner class MyViewHolder(private val binding: ListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        val imageView: ImageView = itemView.findViewById(R.id.imageView)
-        val textView: TextView = itemView.findViewById(R.id.textView)
-        val descTextView: TextView = itemView.findViewById(R.id.descTextView)
+        val imageView: ImageView = binding.imageView
+        val textView: TextView = binding.textView
+        val descTextView: TextView = binding.descTextView
         fun bind(story: ListStoryItem) {
             Glide.with(itemView.context)
                 .load(story.photoUrl)
@@ -54,9 +53,9 @@ class ListAdapter: ListAdapter<ListStoryItem, com.dicoding.picodiploma.loginwith
                     )
 
                 val intent = Intent(itemView.context, DetailStoryActivity::class.java)
-                intent.putExtra("name", story.name)
-                intent.putExtra("image", story.photoUrl)
-                intent.putExtra("description", story.description)
+                intent.putExtra(DetailStoryActivity.STORY_NAME, story.name)
+                intent.putExtra(DetailStoryActivity.IMAGE_STORY, story.photoUrl)
+                intent.putExtra(DetailStoryActivity.DESCRIPTION, story.description)
                 itemView.context.startActivity(intent, optionsCompat.toBundle())
 
             }

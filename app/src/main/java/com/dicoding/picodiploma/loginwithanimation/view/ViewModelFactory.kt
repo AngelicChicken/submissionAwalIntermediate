@@ -8,7 +8,6 @@ import com.dicoding.picodiploma.loginwithanimation.di.Injection
 import com.dicoding.picodiploma.loginwithanimation.view.login.LoginViewModel
 import com.dicoding.picodiploma.loginwithanimation.view.signup.ResgisterViewModel
 import com.dicoding.picodiploma.loginwithanimation.view.story.MainViewModel
-import com.dicoding.picodiploma.loginwithanimation.view.story.StoryViewModel
 
 class ViewModelFactory(private val repository: UserRepository) : ViewModelProvider.NewInstanceFactory() {
 

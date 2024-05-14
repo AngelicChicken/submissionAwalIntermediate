@@ -20,9 +20,9 @@ class DetailStoryActivity : AppCompatActivity() {
 
     }
     private fun setupData(){
-        val storyName = intent.getStringExtra("name")
-        val imageStory = intent.getStringExtra("image")
-        val descStory = intent.getStringExtra("description")
+        val storyName = intent.getStringExtra(STORY_NAME)
+        val imageStory = intent.getStringExtra(IMAGE_STORY)
+        val descStory = intent.getStringExtra(DESCRIPTION)
 
         Glide.with(applicationContext)
             .load(imageStory)
@@ -31,5 +31,11 @@ class DetailStoryActivity : AppCompatActivity() {
 
         binding.nameTextView.text = storyName
         binding.descTextView.text = descStory
+    }
+
+    companion object {
+        const val STORY_NAME = "name"
+        const val IMAGE_STORY = "image"
+        const val DESCRIPTION = "description"
     }
 }

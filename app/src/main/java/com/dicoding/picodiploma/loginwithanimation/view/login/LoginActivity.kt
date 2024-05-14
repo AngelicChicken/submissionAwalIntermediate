@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.picodiploma.loginwithanimation.R
 import com.dicoding.picodiploma.loginwithanimation.custom.MyButton
@@ -30,8 +31,6 @@ import retrofit2.HttpException
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var loginButton: MyButton
-    private lateinit var loginPassword: MyEditText
 
     private val viewModel by viewModels<LoginViewModel> {
         ViewModelFactory.getAuthInstance(this)
@@ -42,21 +41,9 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loginButton = findViewById(R.id.login_button)
-        loginPassword = findViewById(R.id.passwordEditText)
-
         setMyButtonEnabled()
 
-        loginPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                setMyButtonEnabled()
-            }
-            override fun afterTextChanged(s: Editable) {
-            }
-        })
-        loginPassword.setOnClickListener { Toast.makeText(this@LoginActivity, loginPassword.text, Toast.LENGTH_SHORT).show() }
+        binding.passwordEditText.addTextChangedListener(onTextChanged = { _, _, _, _ -> setMyButtonEnabled() })
 
         setupView()
         setupAction()
@@ -64,15 +51,15 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun login(email:String?, password:String?){
+    private fun login(email:String, password:String){
         showLoading(true)
         lifecycleScope.launch {
             try {
-                val response = viewModel.login(email!!, password!!)
+                val response = viewModel.login(email, password)
                 if(response != null){
                     val name = response.loginResult?.name
                     val token = response.loginResult?.token
-                    viewModel.saveSession(UserModel(email!!, token!!))
+                    viewModel.saveSession(UserModel(email, token!!))
                     AlertDialog.Builder(this@LoginActivity).apply {
                         showLoading(false)
                         setTitle("Selamat")
@@ -94,15 +81,15 @@ class LoginActivity : AppCompatActivity() {
                 val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
                 val errorMessage = errorBody.message
                 showLoading(false)
-                Toast.makeText(this@LoginActivity,"$errorMessage", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@LoginActivity, errorMessage, Toast.LENGTH_SHORT).show()
             }
         }
 
     }
 
     private fun setMyButtonEnabled() {
-        val result = loginPassword.text
-        loginButton.isEnabled = result != null && result.toString().isNotEmpty()
+        val result = binding.passwordEditText.text
+        binding.loginButton.isEnabled = result != null && result.toString().isNotEmpty()
     }
 
     private fun showLoading(isLoading: Boolean) {

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,13 +14,13 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.picodiploma.loginwithanimation.R
-import com.dicoding.picodiploma.loginwithanimation.data.Api.ApiConfig
+import com.dicoding.picodiploma.loginwithanimation.data.api.ApiConfig
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityAddStoryBinding
-import com.dicoding.picodiploma.loginwithanimation.view.MainViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.addstory.CameraActivity.Companion.CAMERAX_RESULT
 import com.dicoding.picodiploma.loginwithanimation.view.story.MainViewModel
@@ -67,20 +66,15 @@ class AddStoryActivity : AppCompatActivity() {
         if (!allPermissionsGranted()) {
             requestPermissionLauncher.launch(REQUIRED_PERMISSION)
         }
-
-
         binding.galleryButton.setOnClickListener {
             startGallery()
         }
-
         binding.cameraXButton.setOnClickListener {
             startCameraX()
         }
-
         binding.uploadButton.setOnClickListener {
             viewModel.getSession().observe(this@AddStoryActivity) { user ->
                 uploadImage(user.token)
-
             }
         }
     }
@@ -154,7 +148,7 @@ class AddStoryActivity : AppCompatActivity() {
         } ?: showToast(getString(R.string.empty_image_warning))
 
     }
-    fun isNetworkAvailable(context: Context): Boolean {
+    private fun isNetworkAvailable(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
