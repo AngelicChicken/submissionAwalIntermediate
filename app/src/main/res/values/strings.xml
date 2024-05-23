@@ -26,4 +26,5 @@
     <string name="email_hint">Insert Your email</string>
     <string name="password_hint">Insert Your password</string>
     <string name="name_hint">Insert Your Name</string>
+    <string name="title_activity_maps">MapsActivity</string>
 </resources>

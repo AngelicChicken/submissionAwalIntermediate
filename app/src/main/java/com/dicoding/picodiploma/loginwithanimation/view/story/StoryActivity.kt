@@ -18,6 +18,7 @@ import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityStoryBind
 import com.dicoding.picodiploma.loginwithanimation.view.StoryViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.addstory.AddStoryActivity
+import com.dicoding.picodiploma.loginwithanimation.view.maps.MapsActivity
 import com.dicoding.picodiploma.loginwithanimation.view.welcome.WelcomeActivity
 import kotlinx.coroutines.launch
 
@@ -57,6 +58,10 @@ class StoryActivity : AppCompatActivity() {
 
         binding.FABLogout.setOnClickListener{
             mainViewModel.logout()
+        }
+
+        binding.FABMap.setOnClickListener{
+            startActivity(Intent(this@StoryActivity, MapsActivity::class.java))
         }
 
         setupView()
