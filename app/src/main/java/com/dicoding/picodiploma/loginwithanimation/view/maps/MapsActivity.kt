@@ -2,7 +2,12 @@ package com.dicoding.picodiploma.loginwithanimation.view.maps
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.dicoding.picodiploma.loginwithanimation.R
+import com.dicoding.picodiploma.loginwithanimation.data.ResultState
+import com.dicoding.picodiploma.loginwithanimation.data.api.response.ListStoryItem
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -11,11 +16,16 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityMapsBinding
+import com.dicoding.picodiploma.loginwithanimation.view.MapsViewModelFactory
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+
+    private val mapsViewModel: MapsViewModel by viewModels {
+        MapsViewModelFactory.getInstance(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,21 +39,42 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        mapsViewModel.storyWithLocation().observe(this, Observer { result ->
+            when(result){
+                is ResultState.Loading -> {
+
+                }
+                is ResultState.Success -> {
+                    addManyMarker(result.data)
+                }
+                is ResultState.Error -> {
+                    val error = result.error
+                    Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
     }
+
+    private fun addManyMarker(story: List<ListStoryItem>) {
+        story.forEach { data ->
+            val lat = data.lat ?: 0.0
+            val lon = data.lon ?: 0.0
+            val latLng = LatLng(lat, lon)
+            mMap.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+                    .title(data.name)
+                    .snippet(data.description)
+            )
+        }
+        if (story.isNotEmpty()) {
+            val firstStory = story[0]
+            val firstLatLng = LatLng(firstStory.lat ?: 0.0, firstStory.lon ?: 0.0)
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 10f))
+        }
+    }
+
 }
