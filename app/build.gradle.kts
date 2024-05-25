@@ -75,4 +75,12 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.7.2")
 
     implementation("androidx.paging:paging-runtime:3.1.0")
+
+    testImplementation ("androidx.test:core:1.4.0") // InstantTaskExecutorRule
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0") // TestDispatcher
+    testImplementation ("org.mockito:mockito-core:3.11.2")
+    testImplementation ("org.mockito:mockito-inline:3.11.2")
+
+    testImplementation ("androidx.arch.core:core-testing:2.1.0")
+
 }

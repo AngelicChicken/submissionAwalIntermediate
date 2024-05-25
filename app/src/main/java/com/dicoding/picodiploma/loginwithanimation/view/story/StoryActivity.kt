@@ -11,7 +11,9 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.picodiploma.loginwithanimation.data.ResultState
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityStoryBinding
@@ -54,6 +56,14 @@ class StoryActivity : AppCompatActivity() {
         adapter = ListAdapter()
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
+
+        adapter.addLoadStateListener { loadState ->
+            binding.progressIndicator.isVisible = loadState.source.refresh is LoadState.Loading
+            if (loadState.source.refresh is LoadState.Error) {
+                val error = (loadState.source.refresh as LoadState.Error).error
+                Toast.makeText(this, error.localizedMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun observeUserSession(){
