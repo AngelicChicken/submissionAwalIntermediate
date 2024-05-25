@@ -1,8 +1,8 @@
 package com.dicoding.picodiploma.loginwithanimation.view.signup
 
 import androidx.lifecycle.ViewModel
-import com.dicoding.picodiploma.loginwithanimation.data.api.response.RegisterResponse
 import com.dicoding.picodiploma.loginwithanimation.data.UserRepository
+import com.dicoding.picodiploma.loginwithanimation.data.api.response.RegisterResponse
 
 
 class ResgisterViewModel (private val repository: UserRepository) : ViewModel() {

@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.view.MenuItem
-import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
@@ -15,7 +14,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dicoding.picodiploma.loginwithanimation.data.ResultState
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityStoryBinding
 import com.dicoding.picodiploma.loginwithanimation.view.StoryViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
@@ -50,6 +48,19 @@ class StoryActivity : AppCompatActivity() {
         setupView()
         observeStoryData()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(!adapter.snapshot().isEmpty()){
+            adapter.refresh()
+            lifecycleScope.launch {
+                adapter.loadStateFlow
+                    .collect {
+                        binding.recyclerView.smoothScrollToPosition(0)
+                    }
+            }
+        }
     }
 
     private fun setupRecyclerView(){

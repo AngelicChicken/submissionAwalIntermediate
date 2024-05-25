@@ -17,9 +17,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.picodiploma.loginwithanimation.R
 import com.dicoding.picodiploma.loginwithanimation.data.api.ApiConfig
+import com.dicoding.picodiploma.loginwithanimation.data.api.response.FileUploadResponse
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityAddStoryBinding
 import com.dicoding.picodiploma.loginwithanimation.view.ViewModelFactory
 import com.dicoding.picodiploma.loginwithanimation.view.addstory.CameraActivity.Companion.CAMERAX_RESULT
@@ -132,6 +134,7 @@ class AddStoryActivity : AppCompatActivity() {
                     if(isNetworkAvailable(this@AddStoryActivity)){
                     val apiService2 = ApiConfig().getApiService(token)
                     val successResponse = apiService2.uploadImage(multipartBody, requestBody)
+
                     showToast(successResponse.message)
 
                     showLoading(false)

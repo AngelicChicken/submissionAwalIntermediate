@@ -3,7 +3,6 @@ package com.dicoding.picodiploma.loginwithanimation.data.pref
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.dicoding.picodiploma.loginwithanimation.data.ResultState
-import com.dicoding.picodiploma.loginwithanimation.data.StoryRepository
 import com.dicoding.picodiploma.loginwithanimation.data.api.ApiService
 import com.dicoding.picodiploma.loginwithanimation.data.api.response.ErrorResponse
 import com.dicoding.picodiploma.loginwithanimation.data.api.response.ListStoryItem

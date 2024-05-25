@@ -20,7 +20,6 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.dicoding.picodiploma.loginwithanimation.databinding.ActivityCameraBinding
-import java.io.File
 import java.io.FileOutputStream
 
 class CameraActivity : AppCompatActivity() {
