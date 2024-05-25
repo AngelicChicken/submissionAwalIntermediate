@@ -33,6 +33,8 @@ class StoryActivity : AppCompatActivity() {
         StoryViewModelFactory.getInstance(this)
     }
 
+    private lateinit var adapter: ListAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityStoryBinding.inflate(layoutInflater)
@@ -40,32 +42,41 @@ class StoryActivity : AppCompatActivity() {
 
         supportActionBar?.show()
 
-        val layoutManager = LinearLayoutManager(this)
-        binding.recyclerView.layoutManager = layoutManager
+        setupRecyclerView()
+        observeUserSession()
+        setupFabActions()
+        setupView()
+        observeStoryData()
 
-        mainViewModel.getSession().observe(this@StoryActivity) { user ->
+    }
+
+    private fun setupRecyclerView(){
+        adapter = ListAdapter()
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
+    }
+
+    private fun observeUserSession(){
+        mainViewModel.getSession().observe(this) { user ->
             if (!user.isLogin) {
-                startActivity(Intent(this@StoryActivity, WelcomeActivity::class.java))
+                startActivity(Intent(this, WelcomeActivity::class.java))
                 finish()
-            } else {
-                setupAction()
             }
         }
+    }
 
-        binding.FABAddStory.setOnClickListener{
-            startActivity(Intent(this@StoryActivity, AddStoryActivity::class.java))
+    private fun setupFabActions() {
+        binding.FABAddStory.setOnClickListener {
+            startActivity(Intent(this, AddStoryActivity::class.java))
         }
 
-        binding.FABLogout.setOnClickListener{
+        binding.FABLogout.setOnClickListener {
             mainViewModel.logout()
         }
 
-        binding.FABMap.setOnClickListener{
-            startActivity(Intent(this@StoryActivity, MapsActivity::class.java))
+        binding.FABMap.setOnClickListener {
+            startActivity(Intent(this, MapsActivity::class.java))
         }
-
-        setupView()
-        setupAction()
     }
 
     private fun setupView() {
@@ -80,30 +91,14 @@ class StoryActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupAction(){
+    private fun observeStoryData() {
         lifecycleScope.launch {
-            storyViewModel.story().observe(this@StoryActivity) { story ->
-                when (story) {
-                    is ResultState.Error -> {
-                        binding.progressIndicator.visibility = View.INVISIBLE
-                        val error = story.error
-                        Toast.makeText(this@StoryActivity, error, Toast.LENGTH_SHORT).show()
-                    }
-
-                    is ResultState.Loading -> {
-                        binding.progressIndicator.visibility = View.VISIBLE
-                    }
-
-                    is ResultState.Success -> {
-                        binding.progressIndicator.visibility = View.INVISIBLE
-                        val adapter = ListAdapter()
-                        adapter.submitList(story.data)
-                        binding.recyclerView.adapter = adapter
-                    }
-                }
+            storyViewModel.story.observe(this@StoryActivity) { pagingData ->
+                adapter.submitData(lifecycle, pagingData)
             }
         }
     }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {

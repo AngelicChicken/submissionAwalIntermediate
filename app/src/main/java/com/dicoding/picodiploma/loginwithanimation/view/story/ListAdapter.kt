@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dicoding.picodiploma.loginwithanimation.R
 import com.dicoding.picodiploma.loginwithanimation.data.api.response.ListStoryItem
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.bumptech.glide.Glide
 import com.dicoding.picodiploma.loginwithanimation.databinding.ListItemBinding
 
 
-class ListAdapter: ListAdapter<ListStoryItem, com.dicoding.picodiploma.loginwithanimation.view.story.ListAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class ListAdapter: PagingDataAdapter<ListStoryItem, com.dicoding.picodiploma.loginwithanimation.view.story.ListAdapter.MyViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val binding = ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(binding)
